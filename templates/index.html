@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>HOK戦績メモ</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>HOK（王者栄耀）戦績メモ</h1>
+
+    <section class="form-section">
+      <h2>戦績を登録</h2>
+      <form action="/add" method="post">
+        <label>日付: <input type="date" name="date" required></label>
+        <label>キャラ名: <input type="text" name="hero" required></label>
+        <label>勝敗:
+          <select name="result">
+            <option value="勝ち">勝ち</option>
+            <option value="負け">負け</option>
+          </select>
+        </label>
+        <label>KDA: <input type="text" name="kda" placeholder="例: 10/2/5"></label>
+        <label>ビルド: <input type="text" name="build" placeholder="装備構成など"></label>
+        <label>メモ: <textarea name="notes" rows="2"></textarea></label>
+
+        <fieldset>
+          <legend>味方構成</legend>
+          <label>タンク: <input type="number" name="ally_tank" min="0" max="5"></label>
+          <label>メイジ: <input type="number" name="ally_mage" min="0" max="5"></label>
+          <label>アサシン: <input type="number" name="ally_assassin" min="0" max="5"></label>
+          <label>ファイター: <input type="number" name="ally_fighter" min="0" max="5"></label>
+          <label>マークスマン: <input type="number" name="ally_marksman" min="0" max="5"></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>敵構成</legend>
+          <label>タンク: <input type="number" name="enemy_tank" min="0" max="5"></label>
+          <label>メイジ: <input type="number" name="enemy_mage" min="0" max="5"></label>
+          <label>アサシン: <input type="number" name="enemy_assassin" min="0" max="5"></label>
+          <label>ファイター: <input type="number" name="enemy_fighter" min="0" max="5"></label>
+          <label>マークスマン: <input type="number" name="enemy_marksman" min="0" max="5"></label>
+        </fieldset>
+
+        <button type="submit">登録</button>
+      </form>
+    </section>
+
+    <section class="filter-section">
+      <h2>戦績検索</h2>
+      <form method="post">
+        <input type="text" name="hero" placeholder="キャラ名で検索">
+        <select name="result">
+          <option value="">-- 勝敗選択 --</option>
+          <option value="勝ち">勝ち</option>
+          <option value="負け">負け</option>
+        </select>
+        <button type="submit">検索</button>
+      </form>
+    </section>
+
+    <section class="suggest-section">
+      <h2>おすすめビルド（集計結果）</h2>
+      <ul>
+        {% for hero, build in suggested_builds.items() %}
+        <li><strong>{{ hero }}</strong>: {{ build }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="table-section">
+      <h2>戦績一覧</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>日付</th>
+            <th>キャラ</th>
+            <th>勝敗</th>
+            <th>KDA</th>
+            <th>ビルド</th>
+            <th>メモ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in records %}
+          <tr>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
+</body>
+</html>
